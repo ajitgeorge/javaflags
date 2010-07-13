@@ -7,4 +7,5 @@ retrieve RETRIEVE->lib/[package]
 
 config default
   include junit-with-src/4.7
+  include log4j/1.2.15
 end

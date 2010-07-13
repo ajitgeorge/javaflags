@@ -11,6 +11,7 @@ public class FlagsTests {
     @Test
     public void shouldParseArgumentsForFlagValues() {
         assertEquals("default", Sample.stringFlag);
+        assertEquals("default", Sample.unsetStringFlag);
 
         Flags flags = new Flags("com.drw.flags");
         List<String> arguments = flags.parse(new String[]{"--string=something", "anonflagvalue"});
@@ -19,5 +20,6 @@ public class FlagsTests {
         assertEquals("anonflagvalue", getOnlyElement(arguments));
 
         assertEquals("something", Sample.stringFlag);
+        assertEquals("default", Sample.unsetStringFlag);
     }
 }

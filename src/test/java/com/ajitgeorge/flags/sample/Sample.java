@@ -1,6 +1,6 @@
-package com.drw.flags.sample;
+package com.ajitgeorge.flags.sample;
 
-import com.drw.flags.Flag;
+import com.ajitgeorge.flags.Flag;
 
 public class Sample {
 

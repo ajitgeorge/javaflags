@@ -1,4 +1,4 @@
-package com.drw.flags;
+package com.ajitgeorge.flags;
 
 import com.google.common.base.Predicate;
 import org.reflections.Reflections;

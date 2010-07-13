@@ -1,8 +1,8 @@
-package com.drw.flags;
+package com.ajitgeorge.flags;
 
-import com.drw.flags.doublydefined.First;
-import com.drw.flags.doublydefined.Second;
-import com.drw.flags.sample.Sample;
+import com.ajitgeorge.flags.doublydefined.First;
+import com.ajitgeorge.flags.doublydefined.Second;
+import com.ajitgeorge.flags.sample.Sample;
 import org.junit.Test;
 
 import java.util.List;
@@ -16,7 +16,7 @@ public class FlagsTests {
         assertEquals("default", Sample.stringFlag);
         assertEquals("default", Sample.unsetStringFlag);
 
-        Flags flags = new Flags("com.drw.flags.sample");
+        Flags flags = new Flags("com.ajitgeorge.flags.sample");
         List<String> arguments = flags.parse(new String[]{"--string=something", "anonflagvalue"});
 
         assertEquals(1, arguments.size());
@@ -28,7 +28,7 @@ public class FlagsTests {
 
     @Test
     public void shouldAllowMultipleInstances() {
-        Flags flags = new Flags("com.drw.flags.doublydefined");
+        Flags flags = new Flags("com.ajitgeorge.flags.doublydefined");
         flags.parse(new String[]{"--doublydefined=something"});
 
         assertEquals("something", First.doublyDefined);

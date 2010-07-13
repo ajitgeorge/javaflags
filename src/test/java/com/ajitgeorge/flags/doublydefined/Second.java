@@ -1,6 +1,6 @@
-package com.drw.flags.doublydefined;
+package com.ajitgeorge.flags.doublydefined;
 
-import com.drw.flags.Flag;
+import com.ajitgeorge.flags.Flag;
 
 public class Second {
     @Flag("doublydefined")

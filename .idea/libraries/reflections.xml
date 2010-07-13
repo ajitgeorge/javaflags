@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="reflections">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/put-me-in-fig/reflections/reflections-0.9.5-RC2.jar!/" />
+      <root url="file://$PROJECT_DIR$/put-me-in-fig/reflections/lib" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/put-me-in-fig/reflections/reflections-0.9.5-RC2-sources.jar!/" />
+    </SOURCES>
+    <jarDirectory url="file://$PROJECT_DIR$/put-me-in-fig/reflections/lib" recursive="false" />
+  </library>
+</component>

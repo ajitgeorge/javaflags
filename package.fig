@@ -1,0 +1,10 @@
+retrieve CLASSPATH->lib/[package]
+retrieve DOCPATH->lib/[package]
+retrieve SOURCEPATH->lib/[package]
+retrieve LIBPATH->lib/[package]
+retrieve PATH->lib/[package]
+retrieve RETRIEVE->lib/[package]
+
+config default
+  include junit-with-src/4.7
+end

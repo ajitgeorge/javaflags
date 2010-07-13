@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Set;
 
 import static com.google.common.collect.Iterables.filter;
-import static com.google.common.collect.Iterables.getOnlyElement;
 import static com.google.common.collect.Lists.newArrayList;
 
 public class Flags {
@@ -30,16 +29,18 @@ public class Flags {
                 final String name = parts[0].substring(2);
                 String value = parts[1];
 
-                Field field = getOnlyElement(filter(flaggedFields, new Predicate<Field>() {
+                Iterable<Field> fields = filter(flaggedFields, new Predicate<Field>() {
                     @Override
                     public boolean apply(Field elem) {
                         return elem.getAnnotation(Flag.class).value().equals(name);
                     }
-                }));
-                try {
-                    field.set(null, value);
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
+                });
+                for (Field field : fields) {
+                    try {
+                        field.set(null, value);
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
                 }
             } else {
                 nonFlagArguments.add(s);

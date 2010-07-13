@@ -1,4 +1,6 @@
-package com.drw.flags;
+package com.drw.flags.sample;
+
+import com.drw.flags.Flag;
 
 public class Sample {
 

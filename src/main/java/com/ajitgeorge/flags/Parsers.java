@@ -51,6 +51,20 @@ public class Parsers {
             }
         });
 
+        all.put(boolean.class, new Parser<Boolean>() {
+            @Override
+            public Boolean parse(String stringValue) throws IllegalAccessException {
+                return new Boolean(stringValue);
+            }
+        });
+
+        all.put(Boolean.class, new Parser<Boolean>() {
+            @Override
+            public Boolean parse(String stringValue) throws IllegalAccessException {
+                return new Boolean(stringValue);
+            }
+        });
+
         return all;
     }
 }

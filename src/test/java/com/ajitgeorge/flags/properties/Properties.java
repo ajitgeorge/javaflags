@@ -44,4 +44,25 @@ public class Properties {
 
     @Flag("unsetbigdecimal")
     public static BigDecimal unsetBigDecimalFlag;
+
+    @Flag("true")
+    public static boolean trueFlag;
+
+    @Flag("mixedCaseTrue")
+    public static boolean mixedCaseTrueFlag;
+
+    @Flag("false")
+    public static boolean falseFlag = true;
+
+    @Flag("mixedCaseFalse")
+    public static boolean mixedCaseFalseFlag = true;
+
+    @Flag("unsetBoolean")
+    public static boolean unsetBooleanFlag;
+
+    @Flag("booleanClass")
+    public static Boolean booleanClassFlag;
+
+    @Flag("unsetBooleanClass")
+    public static Boolean unsetBooleanClassFlag;
 }

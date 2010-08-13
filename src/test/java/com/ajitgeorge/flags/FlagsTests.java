@@ -13,6 +13,7 @@ import java.util.List;
 
 import static com.google.common.collect.Iterables.getOnlyElement;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -134,6 +135,50 @@ public class FlagsTests {
 
         assertEquals(new BigDecimal("42.480"), Properties.bigDecimalFlag);
         assertNull(Properties.unsetBigDecimalFlag);
+    }
+
+    @Test
+    public void shouldHandleBooleansFromArgv() {
+        assertFalse(Argv.trueFlag);
+        assertFalse(Argv.mixedCaseTrueFlag);
+        assertTrue(Argv.falseFlag);
+        assertTrue(Argv.mixedCaseFalseFlag);
+        assertFalse(Argv.unsetBooleanFlag);
+        assertNull(Argv.booleanClassFlag);
+        assertNull(Argv.unsetBooleanClassFlag);
+
+        Flags flags = new Flags("com.ajitgeorge.flags.sample");
+        flags.parse("--true=true", "--mixedCaseTrue=tRuE", "--false=false", "--mixedCaseFalse=fAlSe", "--booleanClass=true");
+
+        assertTrue(Argv.trueFlag);
+        assertTrue(Argv.mixedCaseTrueFlag);
+        assertFalse(Argv.falseFlag);
+        assertFalse(Argv.mixedCaseFalseFlag);
+        assertFalse(Argv.unsetBooleanFlag);
+        assertEquals(Boolean.TRUE, Argv.booleanClassFlag);
+        assertNull(Argv.unsetBooleanClassFlag);
+    }
+
+    @Test
+    public void shouldHandleBooleansFromProperties() {
+        assertFalse(Properties.trueFlag);
+        assertFalse(Properties.mixedCaseTrueFlag);
+        assertTrue(Properties.falseFlag);
+        assertTrue(Properties.mixedCaseFalseFlag);
+        assertFalse(Properties.unsetBooleanFlag);
+        assertNull(Properties.booleanClassFlag);
+        assertNull(Properties.unsetBooleanClassFlag);
+
+        Flags flags = new Flags("com.ajitgeorge.flags.properties");
+        flags.parse(properties("true", "true", "mixedCaseTrue", "tRuE", "false", "false", "mixedCaseFalse", "fAlSe", "booleanClass", "true"));
+
+        assertTrue(Properties.trueFlag);
+        assertTrue(Properties.mixedCaseTrueFlag);
+        assertFalse(Properties.falseFlag);
+        assertFalse(Properties.mixedCaseFalseFlag);
+        assertFalse(Properties.unsetBooleanFlag);
+        assertEquals(Boolean.TRUE, Properties.booleanClassFlag);
+        assertNull(Properties.unsetBooleanClassFlag);
     }
 
     @Test

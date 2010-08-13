@@ -146,9 +146,11 @@ public class FlagsTests {
         assertFalse(Argv.unsetBooleanFlag);
         assertNull(Argv.booleanClassFlag);
         assertNull(Argv.unsetBooleanClassFlag);
+        assertFalse(Argv.yesFlag);
+        assertTrue(Argv.noFlag);
 
         Flags flags = new Flags("com.ajitgeorge.flags.sample");
-        flags.parse("--true=true", "--mixedCaseTrue=tRuE", "--false=false", "--mixedCaseFalse=fAlSe", "--booleanClass=true");
+        flags.parse("--true=true", "--mixedCaseTrue=tRuE", "--false=false", "--mixedCaseFalse=fAlSe", "--booleanClass=true", "--yes=YeS", "--no=nO");
 
         assertTrue(Argv.trueFlag);
         assertTrue(Argv.mixedCaseTrueFlag);
@@ -157,6 +159,8 @@ public class FlagsTests {
         assertFalse(Argv.unsetBooleanFlag);
         assertEquals(Boolean.TRUE, Argv.booleanClassFlag);
         assertNull(Argv.unsetBooleanClassFlag);
+        assertTrue(Argv.yesFlag);
+        assertFalse(Argv.noFlag);
     }
 
     @Test
@@ -168,9 +172,11 @@ public class FlagsTests {
         assertFalse(Properties.unsetBooleanFlag);
         assertNull(Properties.booleanClassFlag);
         assertNull(Properties.unsetBooleanClassFlag);
+        assertFalse(Properties.yesFlag);
+        assertTrue(Properties.noFlag);
 
         Flags flags = new Flags("com.ajitgeorge.flags.properties");
-        flags.parse(properties("true", "true", "mixedCaseTrue", "tRuE", "false", "false", "mixedCaseFalse", "fAlSe", "booleanClass", "true"));
+        flags.parse(properties("true", "true", "mixedCaseTrue", "tRuE", "false", "false", "mixedCaseFalse", "fAlSe", "booleanClass", "true", "yes", "yEs", "no", "No"));
 
         assertTrue(Properties.trueFlag);
         assertTrue(Properties.mixedCaseTrueFlag);
@@ -179,6 +185,8 @@ public class FlagsTests {
         assertFalse(Properties.unsetBooleanFlag);
         assertEquals(Boolean.TRUE, Properties.booleanClassFlag);
         assertNull(Properties.unsetBooleanClassFlag);
+        assertTrue(Properties.yesFlag);
+        assertFalse(Properties.noFlag);
     }
 
     @Test

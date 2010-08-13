@@ -54,6 +54,8 @@ public class Parsers {
         all.put(boolean.class, new Parser<Boolean>() {
             @Override
             public Boolean parse(String stringValue) throws IllegalAccessException {
+                if ("yes".equals(stringValue.toLowerCase())) return Boolean.TRUE;
+                if ("no".equals(stringValue.toLowerCase())) return Boolean.FALSE;
                 return new Boolean(stringValue);
             }
         });

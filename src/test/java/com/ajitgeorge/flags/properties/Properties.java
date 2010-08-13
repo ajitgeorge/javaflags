@@ -65,4 +65,10 @@ public class Properties {
 
     @Flag("unsetBooleanClass")
     public static Boolean unsetBooleanClassFlag;
+
+    @Flag("yes")
+    public static boolean yesFlag;
+
+    @Flag("no")
+    public static boolean noFlag = true;
 }

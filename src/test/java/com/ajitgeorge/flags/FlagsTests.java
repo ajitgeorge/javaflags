@@ -6,6 +6,7 @@ import com.ajitgeorge.flags.sample.Sample;
 import com.ajitgeorge.flags.sample.UnknownType;
 import org.junit.Test;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import static com.google.common.collect.Iterables.getOnlyElement;
@@ -13,7 +14,7 @@ import static org.junit.Assert.*;
 
 public class FlagsTests {
     @Test
-    public void shouldParseArgumentsForFlagValues() {
+    public void shouldHandleStrings() {
         assertEquals("default", Sample.stringFlag);
         assertEquals("default", Sample.unsetStringFlag);
 
@@ -21,8 +22,6 @@ public class FlagsTests {
         List<String> arguments = flags.parse(new String[] {
                 "--string=something",
                 "anonflagvalue",
-                "--int=42",
-                "--integer=612"
         });
 
         assertEquals(1, arguments.size());
@@ -31,11 +30,31 @@ public class FlagsTests {
         assertEquals("something", Sample.stringFlag);
         assertEquals("default", Sample.unsetStringFlag);
         assertNull(Sample.undefaultedStringFlag);
+    }
+
+    @Test
+    public void shouldHandleIntegers() {
+        Flags flags = new Flags("com.ajitgeorge.flags.sample");
+        flags.parse(new String[] {
+                "--int=42",
+                "--integer=612"
+        });
 
         assertEquals(42, Sample.intFlag);
         assertEquals(0, Sample.unsetIntFlag);
         assertEquals(new Integer(612), Sample.integerFlag);
         assertNull(Sample.unsetIntegerFlag);
+    }
+
+    @Test
+    public void shouldHandleBigDecimals() {
+        Flags flags = new Flags("com.ajitgeorge.flags.sample");
+        flags.parse(new String[] {
+                "--bigdecimal=42.480",
+        });
+
+        assertEquals(new BigDecimal("42.480"), Sample.bigDecimalFlag);
+        assertNull(Sample.unsetBigDecimalFlag);        
     }
 
     @Test

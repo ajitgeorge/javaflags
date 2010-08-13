@@ -1,6 +1,7 @@
 package com.ajitgeorge.flags;
 
 import java.lang.reflect.Field;
+import java.math.BigDecimal;
 import java.util.Map;
 
 import static com.google.common.collect.Maps.newHashMap;
@@ -27,6 +28,13 @@ public class Setters {
             @Override
             public void set(Field field, String stringValue) throws IllegalAccessException {
                 field.set(null, new Integer(stringValue));
+            }
+        });
+
+        all.put(BigDecimal.class, new Setter() {
+            @Override
+            public void set(Field field, String stringValue) throws IllegalAccessException {
+                field.set(null, new BigDecimal(stringValue));
             }
         });
 

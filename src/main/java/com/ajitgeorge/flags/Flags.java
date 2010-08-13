@@ -16,7 +16,6 @@ import static com.google.common.collect.Lists.newArrayList;
  * TODO - generate usage
  * TODO - don't require '='
  * TODO - support booleans
- * TODO - support ints
  * TODO - support yes/no, true/false for booleans
  * TODO = support unspecified value for boolean flag means true
  */

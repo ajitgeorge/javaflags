@@ -2,6 +2,8 @@ package com.ajitgeorge.flags.sample;
 
 import com.ajitgeorge.flags.Flag;
 
+import java.math.BigDecimal;
+
 public class Sample {
 
     @Flag("string")
@@ -24,4 +26,10 @@ public class Sample {
 
     @Flag("unsetInteger")
     public static Integer unsetIntegerFlag;
+
+    @Flag("bigdecimal")
+    public static BigDecimal bigDecimalFlag;
+
+    @Flag("unsetbigdecimal")
+    public static BigDecimal unsetBigDecimalFlag;
 }

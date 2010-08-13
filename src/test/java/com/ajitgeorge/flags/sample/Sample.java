@@ -27,6 +27,18 @@ public class Sample {
     @Flag("unsetInteger")
     public static Integer unsetIntegerFlag;
 
+    @Flag("double")
+    public static double doubleFlag;
+
+    @Flag("unsetDouble")
+    public static double unsetDoubleFlag;
+
+    @Flag("doubleClass")
+    public static Double doubleClassFlag;
+
+    @Flag("unsetDoubleClass")
+    public static Double unsetDoubleClassFlag;
+
     @Flag("bigdecimal")
     public static BigDecimal bigDecimalFlag;
 

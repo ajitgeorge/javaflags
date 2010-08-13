@@ -31,6 +31,20 @@ public class Setters {
             }
         });
 
+        all.put(double.class, new Setter() {
+            @Override
+            public void set(Field field, String stringValue) throws IllegalAccessException {
+                field.set(null, Double.parseDouble(stringValue));
+            }
+        });
+
+        all.put(Double.class, new Setter() {
+            @Override
+            public void set(Field field, String stringValue) throws IllegalAccessException {
+                field.set(null, new Double(stringValue));
+            }
+        });
+
         all.put(BigDecimal.class, new Setter() {
             @Override
             public void set(Field field, String stringValue) throws IllegalAccessException {

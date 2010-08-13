@@ -10,7 +10,10 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import static com.google.common.collect.Iterables.getOnlyElement;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public class FlagsTests {
     @Test
@@ -44,6 +47,20 @@ public class FlagsTests {
         assertEquals(0, Sample.unsetIntFlag);
         assertEquals(new Integer(612), Sample.integerFlag);
         assertNull(Sample.unsetIntegerFlag);
+    }
+
+    @Test
+    public void shouldHandleDoubles() {
+        Flags flags = new Flags("com.ajitgeorge.flags.sample");
+        flags.parse(new String[] {
+                "--double=31.42",
+                "--doubleClass=545.612"
+        });
+
+        assertEquals(31.42, Sample.doubleFlag, 0.0);
+        assertEquals(0.0, Sample.unsetDoubleFlag, 0.0);
+        assertEquals(new Double(545.612), Sample.doubleClassFlag);
+        assertNull(Sample.unsetDoubleClassFlag);
     }
 
     @Test

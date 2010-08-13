@@ -6,6 +6,7 @@ import org.reflections.scanners.FieldAnnotationsScanner;
 
 import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import static com.google.common.collect.Iterables.filter;
@@ -21,6 +22,7 @@ import static com.google.common.collect.Lists.newArrayList;
  */
 public class Flags {
     private Reflections reflections;
+    private Map<Class, Setter> setters = Setters.all();
 
     public Flags(String packagePrefix) {
         reflections = new Reflections(packagePrefix, new FieldAnnotationsScanner());
@@ -45,17 +47,13 @@ public class Flags {
                 });
                 for (Field field : fields) {
                     try {
-                        if (field.getType().equals(String.class)) {
-                            field.set(null, value);
+                        Setter setter = setters.get(field.getType());
+
+                        if (setter == null) {
+                            throw new IllegalArgumentException("flagged field is of unknown type " + field.getType());
                         }
 
-                        if (field.getType().equals(int.class)) {
-                            field.set(null, Integer.parseInt(value));
-                        }
-
-                        if (field.getType().equals(Integer.class)) {
-                            field.set(null, new Integer(value));
-                        }
+                        setter.set(field, value);
                     } catch (IllegalAccessException e) {
                         e.printStackTrace();
                     }

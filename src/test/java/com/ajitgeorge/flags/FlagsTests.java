@@ -3,13 +3,13 @@ package com.ajitgeorge.flags;
 import com.ajitgeorge.flags.doublydefined.First;
 import com.ajitgeorge.flags.doublydefined.Second;
 import com.ajitgeorge.flags.sample.Sample;
+import com.ajitgeorge.flags.sample.UnknownType;
 import org.junit.Test;
 
 import java.util.List;
 
 import static com.google.common.collect.Iterables.getOnlyElement;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 public class FlagsTests {
     @Test
@@ -45,5 +45,16 @@ public class FlagsTests {
 
         assertEquals("something", First.doublyDefined);
         assertEquals("something", Second.doublyDefined);
+    }
+
+    @Test
+    public void shouldHandleUnknownTypesGracefully() {
+        Flags flags = new Flags("com.ajitgeorge.flags.sample");
+        try {
+            flags.parse(new String[]{"--unknownType=value"});
+            fail("should have thrown IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+            assertTrue(e.getMessage().contains(UnknownType.class.getName()));
+        }
     }
 }

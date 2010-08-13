@@ -1,10 +1,10 @@
-package com.ajitgeorge.flags.sample;
+package com.ajitgeorge.flags.properties;
 
 import com.ajitgeorge.flags.Flag;
 
 import java.math.BigDecimal;
 
-public class Sample {
+public class Properties {
 
     @Flag("string")
     public static String stringFlag = "default";

@@ -7,6 +7,7 @@ import org.reflections.scanners.FieldAnnotationsScanner;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 
 import static com.google.common.collect.Iterables.filter;
@@ -20,17 +21,21 @@ import static com.google.common.collect.Lists.newArrayList;
  * TODO = support unspecified value for boolean flag means true
  */
 public class Flags {
-    private Reflections reflections;
     private Map<Class, Parser> parsers = Parsers.all();
+    private Set<Field> flaggedFields;
 
     public Flags(String packagePrefix) {
-        reflections = new Reflections(packagePrefix, new FieldAnnotationsScanner());
+        Reflections reflections = new Reflections(packagePrefix, new FieldAnnotationsScanner());
+        flaggedFields = reflections.getFieldsAnnotatedWith(Flag.class);
+    }
+
+    public List<String> parse(Properties[] propertiesInstances, String[] argv) {
+        parse(propertiesInstances);
+        return parse(argv);
     }
 
     public List<String> parse(String... argv) {
         List<String> nonFlagArguments = newArrayList();
-
-        Set<Field> flaggedFields = reflections.getFieldsAnnotatedWith(Flag.class);
 
         for (String s : argv) {
             if (s.startsWith("--")) {
@@ -38,29 +43,41 @@ public class Flags {
                 final String name = parts[0].substring(2);
                 String value = parts[1];
 
-                Iterable<Field> fields = filter(flaggedFields, new Predicate<Field>() {
-                    @Override
-                    public boolean apply(Field elem) {
-                        return elem.getAnnotation(Flag.class).value().equals(name);
-                    }
-                });
-                for (Field field : fields) {
-                    try {
-                        Parser parser = parsers.get(field.getType());
-
-                        if (parser == null) {
-                            throw new IllegalArgumentException("flagged field is of unknown type " + field.getType());
-                        }
-
-                        field.set(null, parser.parse(value));
-                    } catch (IllegalAccessException e) {
-                        e.printStackTrace();
-                    }
-                }
+                set(name, value);
             } else {
                 nonFlagArguments.add(s);
             }
         }
         return nonFlagArguments;
+    }
+
+    public void parse(Properties... propertiesInstances) {
+        for (Properties properties : propertiesInstances) {
+            for (String name : properties.stringPropertyNames()) {
+                set(name, properties.getProperty(name));
+            }
+        }
+    }
+
+    private void set(final String name, String value) {
+        Iterable<Field> fields = filter(flaggedFields, new Predicate<Field>() {
+            @Override
+            public boolean apply(Field elem) {
+                return elem.getAnnotation(Flag.class).value().equals(name);
+            }
+        });
+        for (Field field : fields) {
+            try {
+                Parser parser = parsers.get(field.getType());
+
+                if (parser == null) {
+                    throw new IllegalArgumentException("flagged field is of unknown type " + field.getType());
+                }
+
+                field.set(null, parser.parse(value));
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

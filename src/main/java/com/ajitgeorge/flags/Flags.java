@@ -19,6 +19,7 @@ import static com.google.common.collect.Lists.newArrayList;
  * TODO - support booleans
  * TODO - support yes/no, true/false for booleans
  * TODO = support unspecified value for boolean flag means true
+ * TODO - RequiredFlag
  */
 public class Flags {
     private Map<Class, Parser> parsers = Parsers.all();

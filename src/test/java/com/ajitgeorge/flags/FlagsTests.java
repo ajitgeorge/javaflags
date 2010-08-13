@@ -50,6 +50,11 @@ public class FlagsTests {
 
     @Test
     public void shouldHandleIntegersFromArgv() {
+        assertEquals(0, Argv.intFlag);
+        assertEquals(0, Argv.unsetIntFlag);
+        assertNull(Argv.integerFlag);
+        assertNull(Argv.unsetIntegerFlag);
+
         Flags flags = new Flags("com.ajitgeorge.flags.sample");
         flags.parse("--int=42", "--integer=612");
 
@@ -61,6 +66,11 @@ public class FlagsTests {
 
     @Test
     public void shouldHandleIntegersFromProperties() {
+        assertEquals(0, Properties.intFlag);
+        assertEquals(0, Properties.unsetIntFlag);
+        assertNull(Properties.integerFlag);
+        assertNull(Properties.unsetIntegerFlag);
+
         Flags flags = new Flags("com.ajitgeorge.flags.properties");
         flags.parse(properties("int", "42", "integer", "612"));
 
@@ -72,6 +82,11 @@ public class FlagsTests {
 
     @Test
     public void shouldHandleDoublesFromArgv() {
+        assertEquals(0, Argv.doubleFlag, 0.0);
+        assertEquals(0, Argv.unsetDoubleFlag, 0.0);
+        assertNull(Argv.doubleClassFlag);
+        assertNull(Argv.unsetDoubleClassFlag);
+
         Flags flags = new Flags("com.ajitgeorge.flags.sample");
         flags.parse("--double=31.42", "--doubleClass=545.612");
 
@@ -83,6 +98,11 @@ public class FlagsTests {
 
     @Test
     public void shouldHandleDoublesFromProperties() {
+        assertEquals(0, Properties.doubleFlag, 0.0);
+        assertEquals(0, Properties.unsetDoubleFlag, 0.0);
+        assertNull(Properties.doubleClassFlag);
+        assertNull(Properties.unsetDoubleClassFlag);
+
         Flags flags = new Flags("com.ajitgeorge.flags.properties");
         flags.parse(properties("double", "31.42", "doubleClass", "545.612"));
 
@@ -94,6 +114,9 @@ public class FlagsTests {
 
     @Test
     public void shouldHandleBigDecimalsFromArgv() {
+        assertNull(Argv.bigDecimalFlag);
+        assertNull(Argv.unsetBigDecimalFlag);
+
         Flags flags = new Flags("com.ajitgeorge.flags.sample");
         flags.parse("--bigdecimal=42.480");
 
@@ -103,6 +126,9 @@ public class FlagsTests {
 
     @Test
     public void shouldHandleBigDecimalsFromProperties() {
+        assertNull(Properties.bigDecimalFlag);
+        assertNull(Properties.unsetBigDecimalFlag);
+
         Flags flags = new Flags("com.ajitgeorge.flags.properties");
         flags.parse(properties("bigdecimal", "42.480"));
 

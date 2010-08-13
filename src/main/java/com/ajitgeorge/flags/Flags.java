@@ -27,7 +27,7 @@ public class Flags {
         reflections = new Reflections(packagePrefix, new FieldAnnotationsScanner());
     }
 
-    public List<String> parse(String[] argv) {
+    public List<String> parse(String... argv) {
         List<String> nonFlagArguments = newArrayList();
 
         Set<Field> flaggedFields = reflections.getFieldsAnnotatedWith(Flag.class);

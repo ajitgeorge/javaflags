@@ -21,7 +21,7 @@ import static com.google.common.collect.Lists.newArrayList;
  */
 public class Flags {
     private Reflections reflections;
-    private Map<Class, Setter> setters = Setters.all();
+    private Map<Class, Parser> parsers = Parsers.all();
 
     public Flags(String packagePrefix) {
         reflections = new Reflections(packagePrefix, new FieldAnnotationsScanner());
@@ -46,13 +46,13 @@ public class Flags {
                 });
                 for (Field field : fields) {
                     try {
-                        Setter setter = setters.get(field.getType());
+                        Parser parser = parsers.get(field.getType());
 
-                        if (setter == null) {
+                        if (parser == null) {
                             throw new IllegalArgumentException("flagged field is of unknown type " + field.getType());
                         }
 
-                        setter.set(field, value);
+                        field.set(null, parser.parse(value));
                     } catch (IllegalAccessException e) {
                         e.printStackTrace();
                     }

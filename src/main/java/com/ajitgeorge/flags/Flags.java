@@ -45,7 +45,17 @@ public class Flags {
                 });
                 for (Field field : fields) {
                     try {
-                        field.set(null, value);
+                        if (field.getType().equals(String.class)) {
+                            field.set(null, value);
+                        }
+
+                        if (field.getType().equals(int.class)) {
+                            field.set(null, Integer.parseInt(value));
+                        }
+
+                        if (field.getType().equals(Integer.class)) {
+                            field.set(null, new Integer(value));
+                        }
                     } catch (IllegalAccessException e) {
                         e.printStackTrace();
                     }

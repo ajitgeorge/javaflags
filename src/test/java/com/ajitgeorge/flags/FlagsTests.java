@@ -9,6 +9,7 @@ import java.util.List;
 
 import static com.google.common.collect.Iterables.getOnlyElement;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class FlagsTests {
     @Test
@@ -17,13 +18,24 @@ public class FlagsTests {
         assertEquals("default", Sample.unsetStringFlag);
 
         Flags flags = new Flags("com.ajitgeorge.flags.sample");
-        List<String> arguments = flags.parse(new String[]{"--string=something", "anonflagvalue"});
+        List<String> arguments = flags.parse(new String[] {
+                "--string=something",
+                "anonflagvalue",
+                "--int=42",
+                "--integer=612"
+        });
 
         assertEquals(1, arguments.size());
         assertEquals("anonflagvalue", getOnlyElement(arguments));
 
         assertEquals("something", Sample.stringFlag);
         assertEquals("default", Sample.unsetStringFlag);
+        assertNull(Sample.undefaultedStringFlag);
+
+        assertEquals(42, Sample.intFlag);
+        assertEquals(0, Sample.unsetIntFlag);
+        assertEquals(new Integer(612), Sample.integerFlag);
+        assertNull(Sample.unsetIntegerFlag);
     }
 
     @Test

@@ -8,4 +8,9 @@ retrieve RETRIEVE->lib/[package]
 config default
   include junit-with-src/4.7
   include log4j/1.2.15
+  include google.guava/r06
+  include reflections/0.9.5-RC2
+  include slf4j/1.5.6
+  include dom4j/1.6.1
+  include javassist/3.8.0-GA
 end

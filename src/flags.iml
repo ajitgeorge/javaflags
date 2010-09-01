@@ -10,6 +10,7 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" scope="TEST" name="junit" level="project" />
     <orderEntry type="library" exported="" name="reflections" level="project" />
+    <orderEntry type="library" name="guava" level="project" />
   </component>
 </module>
 

@@ -228,7 +228,7 @@ public class FlagsTests {
 
     @Test
     public void shouldParseFilenamesAsPropertiesFiles() {
-        assertNull(Both.fromFile);
+        assertNull(Both.fromFileFlag);
 
         Flags flags = new Flags("com.ajitgeorge.flags.sample");
         List<String> arguments = flags.parse("src/test/test.properties", "anonflagvalue");
@@ -236,7 +236,18 @@ public class FlagsTests {
         assertEquals(1, arguments.size());
         assertEquals("anonflagvalue", getOnlyElement(arguments));
 
-        assertEquals("loaded from file", Both.fromFile);
+        assertEquals("loaded from file", Both.fromFileFlag);
+    }
+
+    @Test
+    public void successiveDefsShouldOverride() {
+        assertNull(Both.overriddenFlag);
+
+        Flags flags = new Flags("com.ajitgeorge.flags.sample");
+        flags.parse("src/test/underride.properties", "--overridden=new value");
+
+        assertEquals("new value", Both.overriddenFlag);
+
     }
 
     private java.util.Properties properties(String... defs) {

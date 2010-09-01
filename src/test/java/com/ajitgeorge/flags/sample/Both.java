@@ -10,5 +10,8 @@ public class Both {
     public static String fromPropertiesFlag;
 
     @Flag("fromfile")
-    public static String fromFile;
+    public static String fromFileFlag;
+
+    @Flag("overridden")
+    public static String overriddenFlag;
 }

@@ -226,6 +226,19 @@ public class FlagsTests {
         
     }
 
+    @Test
+    public void shouldParseFilenamesAsPropertiesFiles() {
+        assertNull(Both.fromFile);
+
+        Flags flags = new Flags("com.ajitgeorge.flags.sample");
+        List<String> arguments = flags.parse("src/test/test.properties", "anonflagvalue");
+
+        assertEquals(1, arguments.size());
+        assertEquals("anonflagvalue", getOnlyElement(arguments));
+
+        assertEquals("loaded from file", Both.fromFile);
+    }
+
     private java.util.Properties properties(String... defs) {
         java.util.Properties properties = new java.util.Properties();
 

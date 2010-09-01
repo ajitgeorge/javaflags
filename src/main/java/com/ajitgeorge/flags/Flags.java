@@ -4,7 +4,10 @@ import com.google.common.base.Predicate;
 import org.reflections.Reflections;
 import org.reflections.scanners.FieldAnnotationsScanner;
 
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Field;
+import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -12,6 +15,7 @@ import java.util.Set;
 
 import static com.google.common.collect.Iterables.filter;
 import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.io.Files.newReader;
 
 /**
  * TODO - generate usage
@@ -43,11 +47,23 @@ public class Flags {
                 String value = parts[1];
 
                 set(name, value);
+            } else if (new File(s).isFile()) {
+                parse(loadProperties(s));
             } else {
                 nonFlagArguments.add(s);
             }
         }
         return nonFlagArguments;
+    }
+
+    private Properties loadProperties(String s) {
+        try {
+            Properties properties = new Properties();
+            properties.load(newReader(new File(s), Charset.defaultCharset()));
+            return properties;
+        } catch (IOException e) {
+            throw new RuntimeException("couldn't load properties from file " + s, e);
+        }
     }
 
     public void parse(Properties... propertiesInstances) {

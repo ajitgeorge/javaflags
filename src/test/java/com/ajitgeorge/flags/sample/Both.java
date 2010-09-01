@@ -8,4 +8,7 @@ public class Both {
 
     @Flag("fromproperties")
     public static String fromPropertiesFlag;
+
+    @Flag("fromfile")
+    public static String fromFile;
 }

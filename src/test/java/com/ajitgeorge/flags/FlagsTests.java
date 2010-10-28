@@ -34,6 +34,8 @@ public class FlagsTests {
         assertEquals("something", Argv.stringFlag);
         assertEquals("default", Argv.unsetStringFlag);
         assertNull(Argv.undefaultedStringFlag);
+
+        assertEquals("something", flags.getProperty("string"));
     }
 
     @Test
@@ -47,6 +49,8 @@ public class FlagsTests {
         assertEquals("something", Properties.stringFlag);
         assertEquals("default", Properties.unsetStringFlag);
         assertNull(Properties.undefaultedStringFlag);
+
+        assertEquals("something", flags.getProperty("string"));
     }
 
     @Test

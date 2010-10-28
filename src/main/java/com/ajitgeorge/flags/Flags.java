@@ -8,10 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.nio.charset.Charset;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
+import java.util.*;
 
 import static com.google.common.collect.Iterables.filter;
 import static com.google.common.collect.Lists.newArrayList;
@@ -26,6 +23,7 @@ import static com.google.common.io.Files.newReader;
 public class Flags {
     private Map<Class, Parser> parsers = Parsers.all();
     private Set<Field> flaggedFields;
+    private Map<String, String> properties = new HashMap<String, String>();
 
     public Flags(String packagePrefix) {
         Reflections reflections = new Reflections(packagePrefix, new FieldAnnotationsScanner());
@@ -74,7 +72,17 @@ public class Flags {
         }
     }
 
+    public Map<String, String> getAllProperties() {
+        return Collections.unmodifiableMap(properties);
+    }
+
+    public String getProperty(String key) {
+        return properties.get(key);
+    }
+
     private void set(final String name, String value) {
+        properties.put(name, value);
+
         Iterable<Field> fields = filter(flaggedFields, new Predicate<Field>() {
             @Override
             public boolean apply(Field elem) {

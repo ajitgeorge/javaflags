@@ -71,4 +71,7 @@ public class Properties {
 
     @Flag("no")
     public static boolean noFlag = true;
+
+    @Flag("hasDefaultValue")
+    public static String hasDefaultValue = "hello!";
 }

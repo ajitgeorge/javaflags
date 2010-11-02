@@ -245,13 +245,18 @@ public class FlagsTests {
 
     @Test
     public void successiveDefsShouldOverride() {
-        assertNull(Both.overriddenFlag);
-
         Flags flags = new Flags("com.ajitgeorge.flags.sample");
         flags.parse("src/test/underride.properties", "--overridden=new value");
 
         assertEquals("new value", Both.overriddenFlag);
+    }
 
+    @Test
+    public void getPropertyShouldWorkForDefaultValues() {
+        Flags flags = new Flags("com.ajitgeorge.flags.properties");
+        flags.parse("");
+
+        assertEquals("hello!", flags.getProperty("hasDefaultValue"));
     }
 
     private java.util.Properties properties(String... defs) {

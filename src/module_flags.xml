@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_flags" default="compile.module.flags">
+  <dirname property="module.flags.basedir" file="${ant.file.module_flags}"/>
+  
+  <property name="module.jdk.home.flags" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.flags" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.flags" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.flags" value="${compiler.args}"/>
+  
+  <property name="flags.output.dir" value="${module.flags.basedir}/../out/production/flags"/>
+  <property name="flags.testoutput.dir" value="${module.flags.basedir}/../out/test/flags"/>
+  
+  <path id="flags.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="flags.module.production.classpath">
+    <path refid="${module.jdk.classpath.flags}"/>
+    <path refid="library.reflections.classpath"/>
+    <path refid="library.guava.classpath"/>
+  </path>
+  
+  <path id="flags.runtime.production.module.classpath">
+    <pathelement location="${flags.output.dir}"/>
+    <path refid="library.reflections.classpath"/>
+    <path refid="library.guava.classpath"/>
+  </path>
+  
+  <path id="flags.module.classpath">
+    <path refid="${module.jdk.classpath.flags}"/>
+    <pathelement location="${flags.output.dir}"/>
+    <path refid="library.junit.classpath"/>
+    <path refid="library.reflections.classpath"/>
+    <path refid="library.guava.classpath"/>
+  </path>
+  
+  <path id="flags.runtime.module.classpath">
+    <pathelement location="${flags.output.dir}"/>
+    <pathelement location="${flags.testoutput.dir}"/>
+    <path refid="library.junit.classpath"/>
+    <path refid="library.reflections.classpath"/>
+    <path refid="library.guava.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.flags">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.flags">
+    <patternset refid="excluded.from.module.flags"/>
+  </patternset>
+  
+  <path id="flags.module.sourcepath">
+    <dirset dir="${module.flags.basedir}">
+      <include name="main/java"/>
+    </dirset>
+  </path>
+  
+  <path id="flags.module.test.sourcepath">
+    <dirset dir="${module.flags.basedir}">
+      <include name="test/java"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.flags" depends="compile.module.flags.production,compile.module.flags.tests" description="Compile module flags"/>
+  
+  <target name="compile.module.flags.production" description="Compile module flags; production classes">
+    <mkdir dir="${flags.output.dir}"/>
+    <javac2 destdir="${flags.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.flags}/javac">
+      <compilerarg line="${compiler.args.flags}"/>
+      <bootclasspath refid="flags.module.bootclasspath"/>
+      <classpath refid="flags.module.production.classpath"/>
+      <src refid="flags.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.flags"/>
+    </javac2>
+    
+    <copy todir="${flags.output.dir}">
+      <fileset dir="${module.flags.basedir}/main/java">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.flags.tests" depends="compile.module.flags.production" description="compile module flags; test classes" unless="skip.tests">
+    <mkdir dir="${flags.testoutput.dir}"/>
+    <javac2 destdir="${flags.testoutput.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.flags}/javac">
+      <compilerarg line="${compiler.args.flags}"/>
+      <bootclasspath refid="flags.module.bootclasspath"/>
+      <classpath refid="flags.module.classpath"/>
+      <src refid="flags.module.test.sourcepath"/>
+      <patternset refid="excluded.from.compilation.flags"/>
+    </javac2>
+    
+    <copy todir="${flags.testoutput.dir}">
+      <fileset dir="${module.flags.basedir}/test/java">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="clean.module.flags" description="cleanup module">
+    <delete dir="${flags.output.dir}"/>
+    <delete dir="${flags.testoutput.dir}"/>
+  </target>
+</project>

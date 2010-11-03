@@ -2,3 +2,7 @@ out
 lib
 .DS_Store
 .idea/workspace.xml
+*iml
+*ipr
+*iws
+target

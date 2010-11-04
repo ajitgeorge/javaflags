@@ -28,6 +28,21 @@ public class Flags {
     public Flags(String packagePrefix) {
         Reflections reflections = new Reflections(packagePrefix, new FieldAnnotationsScanner());
         flaggedFields = reflections.getFieldsAnnotatedWith(Flag.class);
+        initializePropertiesMapWithDefaults();
+    }
+
+    private void initializePropertiesMapWithDefaults() {
+        for (Field field : flaggedFields) {
+            try {
+                Object value = field.get(null);
+
+                if (value != null) {
+                    properties.put(field.getName(), field.get(null).toString());
+                }
+            } catch (IllegalAccessException e) {
+                throw new RuntimeException("Field " + field.getName() + " cannot be accessed statically", e);
+            }
+        }
     }
 
     public List<String> parse(Properties[] propertiesInstances, String[] argv) {

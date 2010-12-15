@@ -3,6 +3,8 @@ package com.ajitgeorge.flags;
 import com.google.common.base.Predicate;
 import org.reflections.Reflections;
 import org.reflections.scanners.FieldAnnotationsScanner;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,6 +28,8 @@ import static com.google.common.io.Files.newReader;
  * TODO - RequiredFlag
  */
 public class Flags {
+    private static final Logger log = LoggerFactory.getLogger(Flags.class);
+
     private Map<Class, Parser> parsers = Parsers.all();
     private Set<Field> flaggedFields;
     private Map<String, String> properties = new HashMap<String, String>();
@@ -74,13 +78,16 @@ public class Flags {
         return nonFlagArguments;
     }
 
-    private Properties loadProperties(String s) {
+    private Properties loadProperties(String filename) {
         try {
             Properties properties = new Properties();
-            properties.load(newReader(new File(s), Charset.defaultCharset()));
+            properties.load(newReader(new File(filename), Charset.defaultCharset()));
+            for (String property : properties.stringPropertyNames()) {
+                log.debug("(from {}) property {}={}", new Object[] { filename, property, properties.getProperty(property)});
+            }
             return properties;
         } catch (IOException e) {
-            throw new RuntimeException("couldn't load properties from file " + s, e);
+            throw new RuntimeException("couldn't load properties from file " + filename, e);
         }
     }
 
@@ -119,6 +126,7 @@ public class Flags {
                 }
 
                 field.set(null, parser.parse(value));
+                log.info("set {} to {}", field, value);
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }

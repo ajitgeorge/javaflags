@@ -245,6 +245,8 @@ public class FlagsTests {
 
     @Test
     public void successiveDefsShouldOverride() {
+        assertNull(Both.overriddenFlag);
+
         Flags flags = new Flags("com.ajitgeorge.flags.sample");
         flags.parse("src/test/underride.properties", "--overridden=new value");
 

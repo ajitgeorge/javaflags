@@ -21,12 +21,6 @@ import static com.google.common.collect.Iterables.filter;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.io.Files.newReader;
 
-/**
- * TODO - generate usage
- * TODO - don't require '='
- * TODO = support unspecified value for boolean flag means true
- * TODO - RequiredFlag
- */
 public class Flags {
     private static final Logger log = LoggerFactory.getLogger(Flags.class);
 

@@ -22,12 +22,57 @@ import static com.google.common.collect.Iterables.filter;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.io.Files.newReader;
 
+/**
+ * {@link Flags} scans the classpath for static fields annotated with {@link Flag}, setting
+ * each field to a value determined from an  array of argument strings (typically
+ * from the command line).
+ *
+ * Argument strings either
+ * <ul>
+ * <li> begin with "<code>--</code>" and provide a name for a value, i.e.  <code>--name=value</code>,
+ * <li> are a path to a properties file readable by {@link java.util.Properties}, or
+ * <li> are collected as non-Flags arguments and returned by {@link #parse(java.util.Properties...)}.
+ * </ul>
+ *
+ * Argument strings are applied in order and can be overridden.
+ *
+ * {@link Flags} logs information about fields and the values to which they are set using slf4j.
+ * Logging can be done immediately or deferred until {@link #undeferLogging()} is invoked.  Deferral is
+ * useful when the logging configuration depends on values set by {@link Flags}.  Clients can customize
+ * logging by providing an implementation of {@link Logger}.
+ */
 public class Flags {
     private final Map<Class, Parser> parsers = Parsers.all();
     private final Set<Field> flaggedFields;
     private final Map<String, String> properties = new HashMap<String, String>();
     private final Logger logger;
 
+    /**
+     * Create a Flags scanner that defers its logging until {@link #undeferLogging()} is called.
+     *
+     * @param packagePrefix common prefix of packages to scan
+     * @return a scanner
+     */
+    public static Flags withDeferredLogging(String packagePrefix) {
+        return new Flags(packagePrefix, new DeferredLogger());
+    }
+
+    /**
+     * Create a Flags scanner that logs immediately.
+     *
+     * @param packagePrefix common prefix of packages to scan
+     * @return a scanner
+     */
+    public static Flags withImmediateLogging(String packagePrefix) {
+        return new Flags(packagePrefix, new ImmediateLogger());
+    }
+
+    /**
+     * Create a scanner with custom logging behavior.
+     *
+     * @param packagePrefix common prefix of packages to scan
+     * @param logger
+     */
     public Flags(String packagePrefix, Logger logger) {
         Reflections reflections = new Reflections(packagePrefix, new FieldAnnotationsScanner());
         flaggedFields = reflections.getFieldsAnnotatedWith(Flag.class);
@@ -35,33 +80,23 @@ public class Flags {
         this.logger = logger;
     }
 
-    public static Flags withDeferredLogging(String packagePrefix) {
-        return new Flags(packagePrefix, new DeferredLogger());
-    }
-
-    public static Flags withImmediateLogging(String packagePrefix) {
-        return new Flags(packagePrefix, new ImmediateLogger());
-    }
-
-    private void initializePropertiesMapWithDefaults() {
-        for (Field field : flaggedFields) {
-            try {
-                Object value = field.get(null);
-
-                if (value != null) {
-                    properties.put(field.getName(), field.get(null).toString());
-                }
-            } catch (IllegalAccessException e) {
-                throw new RuntimeException("Field " + field.getName() + " cannot be accessed statically", e);
-            }
-        }
-    }
-
+    /**
+     * Parse properties objects, followed by arguments.
+     *
+     * @param propertiesInstances properties objects
+     * @param argv arguments
+     * @return elements of argv that don't define a Flag value or name a property file
+     */
     public List<String> parse(Properties[] propertiesInstances, String[] argv) {
         parse(propertiesInstances);
         return parse(argv);
     }
 
+    /**
+     * Parse an array of arguments, typically from the command line.
+     * @param argv arguments
+     * @return elements of argv that don't define a Flag value or name a property file
+     */
     public List<String> parse(String... argv) {
         List<String> nonFlagArguments = newArrayList();
 
@@ -81,19 +116,11 @@ public class Flags {
         return nonFlagArguments;
     }
 
-    private Properties loadProperties(String filename) {
-        try {
-            Properties properties = new Properties();
-            properties.load(newReader(new File(filename), Charset.defaultCharset()));
-            for (String property : properties.stringPropertyNames()) {
-                logger.debug("(from {}) property {}={}", new Object[] { filename, property, properties.getProperty(property)});
-            }
-            return properties;
-        } catch (IOException e) {
-            throw new RuntimeException("couldn't load properties from file " + filename, e);
-        }
-    }
-
+    /**
+     * Parse properties objects.
+     *
+     * @param propertiesInstances properties objects
+     */
     public void parse(Properties... propertiesInstances) {
         for (Properties properties : propertiesInstances) {
             for (String name : properties.stringPropertyNames()) {
@@ -102,18 +129,47 @@ public class Flags {
         }
     }
 
+    /**
+     * Provide all flags and the values they have as of the last parse.
+     *
+     * @return a map of flag names to their values
+     */
     @SuppressWarnings({"UnusedDeclaration"})
     public Map<String, String> getAllProperties() {
         return Collections.unmodifiableMap(properties);
     }
 
+    /**
+     * Provide the value for a given flag name.
+     *
+     * @param key the name of the flag
+     * @return the value of the flag
+     */
     public String getProperty(String key) {
         return properties.get(key);
     }
 
+    /**
+     * Do any logging that was previously deferred.
+     */
     public void undeferLogging() {
         logger.undeferLogging();
     }
+
+    private void initializePropertiesMapWithDefaults() {
+        for (Field field : flaggedFields) {
+            try {
+                Object value = field.get(null);
+
+                if (value != null) {
+                    properties.put(field.getName(), field.get(null).toString());
+                }
+            } catch (IllegalAccessException e) {
+                throw new RuntimeException("Field " + field.getName() + " cannot be accessed statically", e);
+            }
+        }
+    }
+
 
     private void set(final String name, String value) {
         properties.put(name, value);
@@ -139,4 +195,18 @@ public class Flags {
             }
         }
     }
+
+    private Properties loadProperties(String filename) {
+        try {
+            Properties properties = new Properties();
+            properties.load(newReader(new File(filename), Charset.defaultCharset()));
+            for (String property : properties.stringPropertyNames()) {
+                logger.debug("(from {}) property {}={}", new Object[] { filename, property, properties.getProperty(property)});
+            }
+            return properties;
+        } catch (IOException e) {
+            throw new RuntimeException("couldn't load properties from file " + filename, e);
+        }
+    }
+
 }

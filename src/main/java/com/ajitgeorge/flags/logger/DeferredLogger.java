@@ -1,13 +1,13 @@
-package com.ajitgeorge.flags;
+package com.ajitgeorge.flags.logger;
 
+import com.ajitgeorge.flags.Flags;
 import com.google.common.collect.Lists;
-import org.slf4j.Logger;
 
 import java.util.List;
 
-public class Slf4jDeferredLogger implements DeferredLogger {
+public class DeferredLogger implements Logger {
 
-    private static Logger slf4jLogger = org.slf4j.LoggerFactory.getLogger(Flags.class);
+    private static org.slf4j.Logger slf4jLogger = org.slf4j.LoggerFactory.getLogger(Flags.class);
 
     private final List<Event> events = Lists.newArrayList();
 

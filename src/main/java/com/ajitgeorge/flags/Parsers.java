@@ -5,7 +5,7 @@ import java.util.Map;
 
 import static com.google.common.collect.Maps.newHashMap;
 
-public class Parsers {
+class Parsers {
     public static Map<Class, Parser> all() {
         Map<Class, Parser> all = newHashMap();
 

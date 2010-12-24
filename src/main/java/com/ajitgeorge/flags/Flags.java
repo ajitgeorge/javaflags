@@ -1,5 +1,8 @@
 package com.ajitgeorge.flags;
 
+import com.ajitgeorge.flags.logger.DeferredLogger;
+import com.ajitgeorge.flags.logger.ImmediateLogger;
+import com.ajitgeorge.flags.logger.Logger;
 import com.google.common.base.Predicate;
 import org.reflections.Reflections;
 import org.reflections.scanners.FieldAnnotationsScanner;
@@ -23,13 +26,21 @@ public class Flags {
     private final Map<Class, Parser> parsers = Parsers.all();
     private final Set<Field> flaggedFields;
     private final Map<String, String> properties = new HashMap<String, String>();
-    private final DeferredLogger log;
+    private final Logger logger;
 
-    public Flags(String packagePrefix) {
+    public Flags(String packagePrefix, Logger logger) {
         Reflections reflections = new Reflections(packagePrefix, new FieldAnnotationsScanner());
         flaggedFields = reflections.getFieldsAnnotatedWith(Flag.class);
         initializePropertiesMapWithDefaults();
-        log = new Slf4jDeferredLogger();
+        this.logger = logger;
+    }
+
+    public static Flags withDeferredLogging(String packagePrefix) {
+        return new Flags(packagePrefix, new DeferredLogger());
+    }
+
+    public static Flags withImmediateLogging(String packagePrefix) {
+        return new Flags(packagePrefix, new ImmediateLogger());
     }
 
     private void initializePropertiesMapWithDefaults() {
@@ -75,7 +86,7 @@ public class Flags {
             Properties properties = new Properties();
             properties.load(newReader(new File(filename), Charset.defaultCharset()));
             for (String property : properties.stringPropertyNames()) {
-                log.debug("(from {}) property {}={}", new Object[] { filename, property, properties.getProperty(property)});
+                logger.debug("(from {}) property {}={}", new Object[] { filename, property, properties.getProperty(property)});
             }
             return properties;
         } catch (IOException e) {
@@ -101,7 +112,7 @@ public class Flags {
     }
 
     public void undeferLogging() {
-        log.undeferLogging();
+        logger.undeferLogging();
     }
 
     private void set(final String name, String value) {
@@ -122,7 +133,7 @@ public class Flags {
                 }
 
                 field.set(null, parser.parse(value));
-                log.info("set {} to {}", field, value);
+                logger.info("set {} to {}", field, value);
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }

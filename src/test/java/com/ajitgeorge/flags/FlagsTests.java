@@ -25,7 +25,7 @@ public class FlagsTests {
         assertEquals("default", Argv.stringFlag);
         assertEquals("default", Argv.unsetStringFlag);
 
-        Flags flags = new Flags("com.ajitgeorge.flags.sample");
+        Flags flags = Flags.withImmediateLogging("com.ajitgeorge.flags.sample");
         List<String> arguments = flags.parse("--string=something", "anonflagvalue");
 
         assertEquals(1, arguments.size());
@@ -43,7 +43,7 @@ public class FlagsTests {
         assertEquals("default", Properties.stringFlag);
         assertEquals("default", Properties.unsetStringFlag);
 
-        Flags flags = new Flags("com.ajitgeorge.flags.properties");
+        Flags flags = Flags.withImmediateLogging("com.ajitgeorge.flags.properties");
         flags.parse(properties("string", "something"));
 
         assertEquals("something", Properties.stringFlag);
@@ -60,7 +60,7 @@ public class FlagsTests {
         assertNull(Argv.integerFlag);
         assertNull(Argv.unsetIntegerFlag);
 
-        Flags flags = new Flags("com.ajitgeorge.flags.sample");
+        Flags flags = Flags.withImmediateLogging("com.ajitgeorge.flags.sample");
         flags.parse("--int=42", "--integer=612");
 
         assertEquals(42, Argv.intFlag);
@@ -76,7 +76,7 @@ public class FlagsTests {
         assertNull(Properties.integerFlag);
         assertNull(Properties.unsetIntegerFlag);
 
-        Flags flags = new Flags("com.ajitgeorge.flags.properties");
+        Flags flags = Flags.withImmediateLogging("com.ajitgeorge.flags.properties");
         flags.parse(properties("int", "42", "integer", "612"));
 
         assertEquals(42, Properties.intFlag);
@@ -92,7 +92,7 @@ public class FlagsTests {
         assertNull(Argv.doubleClassFlag);
         assertNull(Argv.unsetDoubleClassFlag);
 
-        Flags flags = new Flags("com.ajitgeorge.flags.sample");
+        Flags flags = Flags.withImmediateLogging("com.ajitgeorge.flags.sample");
         flags.parse("--double=31.42", "--doubleClass=545.612");
 
         assertEquals(31.42, Argv.doubleFlag, 0.0);
@@ -108,7 +108,7 @@ public class FlagsTests {
         assertNull(Properties.doubleClassFlag);
         assertNull(Properties.unsetDoubleClassFlag);
 
-        Flags flags = new Flags("com.ajitgeorge.flags.properties");
+        Flags flags = Flags.withImmediateLogging("com.ajitgeorge.flags.properties");
         flags.parse(properties("double", "31.42", "doubleClass", "545.612"));
 
         assertEquals(31.42, Properties.doubleFlag, 0.0);
@@ -122,7 +122,7 @@ public class FlagsTests {
         assertNull(Argv.bigDecimalFlag);
         assertNull(Argv.unsetBigDecimalFlag);
 
-        Flags flags = new Flags("com.ajitgeorge.flags.sample");
+        Flags flags = Flags.withImmediateLogging("com.ajitgeorge.flags.sample");
         flags.parse("--bigdecimal=42.480");
 
         assertEquals(new BigDecimal("42.480"), Argv.bigDecimalFlag);
@@ -134,7 +134,7 @@ public class FlagsTests {
         assertNull(Properties.bigDecimalFlag);
         assertNull(Properties.unsetBigDecimalFlag);
 
-        Flags flags = new Flags("com.ajitgeorge.flags.properties");
+        Flags flags = Flags.withImmediateLogging("com.ajitgeorge.flags.properties");
         flags.parse(properties("bigdecimal", "42.480"));
 
         assertEquals(new BigDecimal("42.480"), Properties.bigDecimalFlag);
@@ -153,7 +153,7 @@ public class FlagsTests {
         assertFalse(Argv.yesFlag);
         assertTrue(Argv.noFlag);
 
-        Flags flags = new Flags("com.ajitgeorge.flags.sample");
+        Flags flags = Flags.withImmediateLogging("com.ajitgeorge.flags.sample");
         flags.parse("--true=true", "--mixedCaseTrue=tRuE", "--false=false", "--mixedCaseFalse=fAlSe", "--booleanClass=true", "--yes=YeS", "--no=nO");
 
         assertTrue(Argv.trueFlag);
@@ -179,7 +179,7 @@ public class FlagsTests {
         assertFalse(Properties.yesFlag);
         assertTrue(Properties.noFlag);
 
-        Flags flags = new Flags("com.ajitgeorge.flags.properties");
+        Flags flags = Flags.withImmediateLogging("com.ajitgeorge.flags.properties");
         flags.parse(properties("true", "true", "mixedCaseTrue", "tRuE", "false", "false", "mixedCaseFalse", "fAlSe", "booleanClass", "true", "yes", "yEs", "no", "No"));
 
         assertTrue(Properties.trueFlag);
@@ -195,7 +195,7 @@ public class FlagsTests {
 
     @Test
     public void shouldAllowMultipleInstances() {
-        Flags flags = new Flags("com.ajitgeorge.flags.doublydefined");
+        Flags flags = Flags.withImmediateLogging("com.ajitgeorge.flags.doublydefined");
         flags.parse("--doublydefined=something");
 
         assertEquals("something", First.doublyDefined);
@@ -204,7 +204,7 @@ public class FlagsTests {
 
     @Test
     public void shouldHandleUnknownTypesGracefully() {
-        Flags flags = new Flags("com.ajitgeorge.flags.sample");
+        Flags flags = Flags.withImmediateLogging("com.ajitgeorge.flags.sample");
         try {
             flags.parse("--unknownType=value");
             fail("should have thrown IllegalArgumentException");
@@ -218,7 +218,7 @@ public class FlagsTests {
         assertNull(Both.fromArgvFlag);
         assertNull(Both.fromPropertiesFlag);
 
-        Flags flags = new Flags("com.ajitgeorge.flags.sample");
+        Flags flags = Flags.withImmediateLogging("com.ajitgeorge.flags.sample");
         List<String> arguments = flags.parse(new java.util.Properties[] {properties("fromproperties", "properties")},
                 new String[]{"--fromargv=argv", "anonflagvalue"});
 
@@ -234,7 +234,7 @@ public class FlagsTests {
     public void shouldParseFilenamesAsPropertiesFiles() {
         assertNull(Both.fromFileFlag);
 
-        Flags flags = new Flags("com.ajitgeorge.flags.sample");
+        Flags flags = Flags.withImmediateLogging("com.ajitgeorge.flags.sample");
         List<String> arguments = flags.parse("src/test/test.properties", "anonflagvalue");
 
         assertEquals(1, arguments.size());
@@ -247,7 +247,7 @@ public class FlagsTests {
     public void successiveDefsShouldOverride() {
         assertNull(Both.overriddenFlag);
 
-        Flags flags = new Flags("com.ajitgeorge.flags.sample");
+        Flags flags = Flags.withImmediateLogging("com.ajitgeorge.flags.sample");
         flags.parse("src/test/underride.properties", "--overridden=new value");
 
         assertEquals("new value", Both.overriddenFlag);
@@ -255,7 +255,7 @@ public class FlagsTests {
 
     @Test
     public void getPropertyShouldWorkForDefaultValues() {
-        Flags flags = new Flags("com.ajitgeorge.flags.properties");
+        Flags flags = Flags.withImmediateLogging("com.ajitgeorge.flags.properties");
         flags.parse("");
 
         assertEquals("hello!", flags.getProperty("hasDefaultValue"));

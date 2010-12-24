@@ -3,8 +3,6 @@ package com.ajitgeorge.flags;
 import com.google.common.base.Predicate;
 import org.reflections.Reflections;
 import org.reflections.scanners.FieldAnnotationsScanner;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,16 +20,16 @@ import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.io.Files.newReader;
 
 public class Flags {
-    private static final Logger log = LoggerFactory.getLogger(Flags.class);
-
-    private Map<Class, Parser> parsers = Parsers.all();
-    private Set<Field> flaggedFields;
-    private Map<String, String> properties = new HashMap<String, String>();
+    private final Map<Class, Parser> parsers = Parsers.all();
+    private final Set<Field> flaggedFields;
+    private final Map<String, String> properties = new HashMap<String, String>();
+    private final DeferredLogger log;
 
     public Flags(String packagePrefix) {
         Reflections reflections = new Reflections(packagePrefix, new FieldAnnotationsScanner());
         flaggedFields = reflections.getFieldsAnnotatedWith(Flag.class);
         initializePropertiesMapWithDefaults();
+        log = new Slf4jDeferredLogger();
     }
 
     private void initializePropertiesMapWithDefaults() {
@@ -100,6 +98,10 @@ public class Flags {
 
     public String getProperty(String key) {
         return properties.get(key);
+    }
+
+    public void undeferLogging() {
+        log.undeferLogging();
     }
 
     private void set(final String name, String value) {

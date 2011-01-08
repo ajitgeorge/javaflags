@@ -4,7 +4,7 @@
     <groupId>com.ajitgeorge</groupId>
     <artifactId>javaflags</artifactId>
     <packaging>jar</packaging>
-    <version>edfork-1-SNAPSHOT</version>
+    <version>test-1-SNAPSHOT</version>
     <name>Java Flags library</name>
     <url>http://github.com/ajitgeorge/javaflags</url>
 

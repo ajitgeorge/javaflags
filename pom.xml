@@ -8,10 +8,12 @@
     <url>http://github.com/ajitgeorge/javaflags</url>
 
     <scm>
+        <!-- todo: set to real git repo -->
         <connection>scm:git:git://github.com/etaylor/javaflags.git</connection>
     </scm>
 
     <distributionManagement>
+        <!-- todo: set to real repo -->
         <repository>
             <id>repo</id>
             <name>test repo</name>
@@ -55,6 +57,7 @@
                     <target>1.6</target>
                 </configuration>
             </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
@@ -67,6 +70,7 @@
                     </execution>
                 </executions>
             </plugin>
+
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
@@ -75,6 +79,37 @@
                     </includes>
                     <useSystemClassLoader>false</useSystemClassLoader>
                 </configuration>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.6</version>
+                <executions>
+                    <execution>
+                        <!-- todo: change to deploy -->
+                        <phase>deploy</phase>
+                        <configuration>
+                            <target>
+                                <echo file="target/package.fig" append="false">
+resource "${project.artifactId}-${project.version}.jar"
+resource "${project.artifactId}-${project.version}-sources.jar"
+
+config default
+    append CLASSPATH=@/${project.artifactId}-${project.version}.jar
+    append SRCPATH=@/${project.artifactId}-${project.version}-sources.jar
+end
+                                </echo>
+                                <exec dir="target" executable="fig">
+                                    <arg value="--publish-local"/>
+                                    <arg value="${project.artifactId}/${project.version}"/>
+                                </exec>
+                            </target>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

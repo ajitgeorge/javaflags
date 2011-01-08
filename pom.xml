@@ -13,7 +13,7 @@
     </scm>
 
     <distributionManagement>
-        <!-- todo: set to real repo -->
+        <!-- todo: set to real maven repo -->
         <repository>
             <id>repo</id>
             <name>test repo</name>
@@ -86,7 +86,6 @@
                 <version>1.6</version>
                 <executions>
                     <execution>
-                        <!-- todo: change to deploy -->
                         <phase>deploy</phase>
                         <configuration>
                             <target>
@@ -100,6 +99,7 @@ config default
 end
                                 </echo>
                                 <exec dir="target" executable="fig">
+                                    <!-- todo: change to normal publish -->
                                     <arg value="--publish-local" />
                                     <arg value="${project.artifactId}/${project.version}" />
                                 </exec>

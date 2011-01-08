@@ -11,6 +11,14 @@
         <connection>scm:git:git://github.com/etaylor/javaflags.git</connection>
     </scm>
 
+    <distributionManagement>
+        <repository>
+            <id>repo</id>
+            <name>test repo</name>
+            <url>file:///Users/eataylor/Projects/temp</url>
+        </repository>
+    </distributionManagement>
+
     <repositories>
         <repository>
             <id>reflections-repo</id>

@@ -3,7 +3,7 @@
     <groupId>com.ajitgeorge</groupId>
     <artifactId>javaflags</artifactId>
     <packaging>jar</packaging>
-    <version>3-test-SNAPSHOT</version>
+    <version>3-test</version>
     <name>Java Flags library</name>
     <url>http://github.com/ajitgeorge/javaflags</url>
 
@@ -100,8 +100,8 @@ config default
 end
                                 </echo>
                                 <exec dir="target" executable="fig">
-                                    <arg value="--publish-local"/>
-                                    <arg value="${project.artifactId}/${project.version}"/>
+                                    <arg value="--publish-local" />
+                                    <arg value="${project.artifactId}/${project.version}" />
                                 </exec>
                             </target>
                         </configuration>

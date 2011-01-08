@@ -3,7 +3,7 @@
     <groupId>com.ajitgeorge</groupId>
     <artifactId>javaflags</artifactId>
     <packaging>jar</packaging>
-    <version>3-test</version>
+    <version>4-test-SNAPSHOT</version>
     <name>Java Flags library</name>
     <url>http://github.com/ajitgeorge/javaflags</url>
 

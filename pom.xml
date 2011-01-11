@@ -1,25 +1,16 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.ajitgeorge</groupId>
     <artifactId>javaflags</artifactId>
     <packaging>jar</packaging>
-    <version>4-test-SNAPSHOT</version>
+    <version>4-SNAPSHOT</version>
     <name>Java Flags library</name>
     <url>http://github.com/ajitgeorge/javaflags</url>
 
     <scm>
-        <!-- todo: set to real git repo -->
-        <connection>scm:git:git://github.com/etaylor/javaflags.git</connection>
+        <connection>scm:git:git://github.com/ajitgeorge/javaflags.git</connection>
     </scm>
-
-    <distributionManagement>
-        <!-- todo: set to real maven repo -->
-        <repository>
-            <id>repo</id>
-            <name>test repo</name>
-            <url>file:///home/etaylor/src/temp</url>
-        </repository>
-    </distributionManagement>
 
     <repositories>
         <repository>
@@ -92,8 +83,7 @@
                         <configuration>
                             <target>
                                 <exec dir="${project.build.directory}" executable="fig">
-                                    <!-- todo: change to normal publish -->
-                                    <arg value="--publish-local"/>
+                                    <arg value="--publish"/>
                                     <arg value="${project.artifactId}/${project.version}"/>
                                     <arg value="--resource"/>
                                     <arg value="${project.artifactId}-${project.version}.jar"/>
@@ -111,6 +101,15 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+
+            <!-- todo: don't know where to deploy it -->
+            <plugin>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>2.5</version>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
             </plugin>
         </plugins>
     </build>

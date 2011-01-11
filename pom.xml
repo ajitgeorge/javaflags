@@ -17,7 +17,7 @@
         <repository>
             <id>repo</id>
             <name>test repo</name>
-            <url>file:///Users/eataylor/Projects/temp</url>
+            <url>file:///home/etaylor/src/temp</url>
         </repository>
     </distributionManagement>
 
@@ -52,6 +52,7 @@
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
                 <configuration>
                     <source>1.6</source>
                     <target>1.6</target>
@@ -59,8 +60,8 @@
             </plugin>
 
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
+                <version>2.1.2</version>
                 <executions>
                     <execution>
                         <id>attach-sources</id>
@@ -73,6 +74,7 @@
 
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.5</version>
                 <configuration>
                     <includes>
                         <include>**/*Tests.java</include>
@@ -89,19 +91,18 @@
                         <phase>deploy</phase>
                         <configuration>
                             <target>
-                                <echo file="target/package.fig" append="false">
-resource "${project.artifactId}-${project.version}.jar"
-resource "${project.artifactId}-${project.version}-sources.jar"
-
-config default
-    append CLASSPATH=@/${project.artifactId}-${project.version}.jar
-    append SRCPATH=@/${project.artifactId}-${project.version}-sources.jar
-end
-                                </echo>
-                                <exec dir="target" executable="fig">
+                                <exec dir="${project.build.directory}" executable="fig">
                                     <!-- todo: change to normal publish -->
-                                    <arg value="--publish-local" />
-                                    <arg value="${project.artifactId}/${project.version}" />
+                                    <arg value="--publish-local"/>
+                                    <arg value="${project.artifactId}/${project.version}"/>
+                                    <arg value="--resource"/>
+                                    <arg value="${project.artifactId}-${project.version}.jar"/>
+                                    <arg value="--resource"/>
+                                    <arg value="${project.artifactId}-${project.version}-sources.jar"/>
+                                    <arg value="--append"/>
+                                    <arg value="CLASSPATH=@/${project.artifactId}-${project.version}.jar"/>
+                                    <arg value="--append"/>
+                                    <arg value="SRCPATH=@/${project.artifactId}-${project.version}-sources.jar"/>
                                 </exec>
                             </target>
                         </configuration>

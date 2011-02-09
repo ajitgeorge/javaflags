@@ -167,8 +167,8 @@ public class Flags {
     private void initializePropertiesMapWithDefaults() {
         for (Field field : flaggedFields) {
             try {
-//                Object value = field.get(null);
                 Object value = fieldGet(field);
+
                 if (value != null) {
                     properties.put(field.getName(), field.get(null).toString());
                 }

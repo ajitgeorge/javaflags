@@ -160,7 +160,7 @@ public class Flags {
         try {
             return field.get(null);
         } catch (NullPointerException e) {
-            throw new RuntimeException("Field " + field.getName() + " cannot be accessed statically", e);
+            throw new IllegalAccessException();
         }
     }
 

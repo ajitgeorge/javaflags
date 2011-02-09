@@ -156,11 +156,19 @@ public class Flags {
         logger.undeferLogging();
     }
 
+    private Object fieldGet(Field field) throws IllegalAccessException {
+        try {
+            return field.get(null);
+        } catch (NullPointerException e) {
+            throw new RuntimeException("Field " + field.getName() + " cannot be accessed statically", e);
+        }
+    }
+
     private void initializePropertiesMapWithDefaults() {
         for (Field field : flaggedFields) {
             try {
-                Object value = field.get(null);
-
+//                Object value = field.get(null);
+                Object value = fieldGet(field);
                 if (value != null) {
                     properties.put(field.getName(), field.get(null).toString());
                 }

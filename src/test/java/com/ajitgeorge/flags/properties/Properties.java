@@ -6,10 +6,7 @@ import java.math.BigDecimal;
 
 public class Properties {
 
-    @Flag("bogus")
-    public String bogusFlag = "totally";
-
-    @Flag("string")
+   @Flag("string")
     public static String stringFlag = "default";
 
     @Flag("unsetString")

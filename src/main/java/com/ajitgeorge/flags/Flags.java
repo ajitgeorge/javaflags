@@ -31,7 +31,7 @@ import static com.google.common.io.Files.newReader;
  * <ul>
  * <li> begin with "<code>--</code>" and provide a name for a value, i.e.  <code>--name=value</code>,
  * <li> are a path to a properties file readable by {@link java.util.Properties}, or
- * <li> are collected as non-Flags arguments and returned by {@link #parse(java.util.Properties...)}.
+ * <li> are collected as non-Flags arguments and returned by {@link #parse(String...)}.
  * </ul>
  *
  * Argument strings are applied in order and can be overridden.
@@ -88,7 +88,9 @@ public class Flags {
      * @return elements of argv that don't define a Flag value or name a property file
      */
     public List<String> parse(Properties[] propertiesInstances, String[] argv) {
-        parse(propertiesInstances);
+        for (Properties properties : propertiesInstances) {
+            parse(properties, "Properties[]");
+        }
         return parse(argv);
     }
 
@@ -106,9 +108,9 @@ public class Flags {
                 final String name = parts[0].substring(2);
                 String value = parts[1];
 
-                set(name, value);
+                set(name, value, "command line");
             } else if (new File(s).isFile()) {
-                parse(loadProperties(s));
+                parse(loadProperties(s), s);
             } else {
                 nonFlagArguments.add(s);
             }
@@ -116,16 +118,12 @@ public class Flags {
         return nonFlagArguments;
     }
 
-    /**
-     * Parse properties objects.
-     *
-     * @param propertiesInstances properties objects
-     */
-    public void parse(Properties... propertiesInstances) {
-        for (Properties properties : propertiesInstances) {
-            for (String name : properties.stringPropertyNames()) {
-                set(name, properties.getProperty(name));
-            }
+    void parse(Properties properties) {
+        parse(properties, "object");
+    }
+    private void parse(Properties properties, String source) {
+        for (String name : properties.stringPropertyNames()) {
+            set(name, properties.getProperty(name), source);
         }
     }
 
@@ -179,7 +177,7 @@ public class Flags {
     }
 
 
-    private void set(final String name, String value) {
+    private void set(final String name, String value, String source) {
         properties.put(name, value);
 
         Iterable<Field> fields = filter(flaggedFields, new Predicate<Field>() {
@@ -197,7 +195,7 @@ public class Flags {
                 }
 
                 field.set(null, parser.parse(value));
-                logger.info("set {} to {}", field, value);
+                logger.info("set {} to {} (value from {})", field, value, source);
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }
@@ -208,9 +206,6 @@ public class Flags {
         try {
             Properties properties = new Properties();
             properties.load(newReader(new File(filename), Charset.defaultCharset()));
-            for (String property : properties.stringPropertyNames()) {
-                logger.debug("(from {}) property {}={}", new Object[] { filename, property, properties.getProperty(property)});
-            }
             return properties;
         } catch (IOException e) {
             throw new RuntimeException("couldn't load properties from file " + filename, e);

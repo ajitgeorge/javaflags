@@ -71,7 +71,7 @@ public class Flags {
      * Create a scanner with custom logging behavior.
      *
      * @param packagePrefix common prefix of packages to scan
-     * @param logger
+     * @param logger logging facade
      */
     public Flags(String packagePrefix, Logger logger) {
         Reflections reflections = new Reflections(packagePrefix, new FieldAnnotationsScanner());

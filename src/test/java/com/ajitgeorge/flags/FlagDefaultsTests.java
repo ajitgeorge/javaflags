@@ -8,12 +8,14 @@ import static org.junit.Assert.assertEquals;
 public class FlagDefaultsTests {
 	@Test
 	public void shouldSaveAndRestoreDefaultValues() throws Exception {
-		assertEquals("default", Argv.stringFlag);
+
+		String initialValue = Argv.stringFlag;
+
 		FlagDefaults saved = new FlagDefaults("com.ajitgeorge.flags.sample").save();
 
-		Argv.stringFlag = "purple toupee";
+		Argv.stringFlag += "purple toupee";
 
 		saved.restore();
-		assertEquals("default", Argv.stringFlag);
+		assertEquals(initialValue, Argv.stringFlag);
 	}
 }

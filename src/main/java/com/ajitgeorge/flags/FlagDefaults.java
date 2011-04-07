@@ -22,6 +22,8 @@ public class FlagDefaults {
 	}
 
 	public void restore() {
+        if (savedValues == null) throw new IllegalStateException("no saved values.  (forgot to call save()?)");
+
 		for (Map.Entry<Field, Object> entry : savedValues.entrySet()) {
 			Field field = entry.getKey();
 			Object value = entry.getValue();

@@ -71,4 +71,7 @@ public class Argv {
 
     @Flag("no")
     public static boolean noFlag = true;
+
+    @Flag("withoutEquals")
+    public static boolean withoutEqualsFlag;
 }

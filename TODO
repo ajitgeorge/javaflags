@@ -1,6 +1,5 @@
  * TODO - generate usage
  * TODO - don't require '='
- * TODO = support unspecified value for boolean flag means true
  * TODO - RequiredFlag
  * javadoc
  * raise some kind of event for unknown properties

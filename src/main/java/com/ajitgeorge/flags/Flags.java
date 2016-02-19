@@ -106,7 +106,7 @@ public class Flags {
             if (s.startsWith("--")) {
                 String[] parts = s.split("=", 2);
                 final String name = parts[0].substring(2);
-                String value = parts[1];
+                String value = parts.length > 1 ? parts[1] : "true";
 
                 set(name, value, "command line");
             } else if (new File(s).isFile()) {

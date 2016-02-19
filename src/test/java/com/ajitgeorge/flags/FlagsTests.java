@@ -154,7 +154,7 @@ public class FlagsTests {
         assertTrue(Argv.noFlag);
 
         Flags flags = Flags.withImmediateLogging("com.ajitgeorge.flags.sample");
-        flags.parse("--true=true", "--mixedCaseTrue=tRuE", "--false=false", "--mixedCaseFalse=fAlSe", "--booleanClass=true", "--yes=YeS", "--no=nO");
+        flags.parse("--true=true", "--mixedCaseTrue=tRuE", "--false=false", "--mixedCaseFalse=fAlSe", "--booleanClass=true", "--yes=YeS", "--no=nO", "--withoutEquals");
 
         assertTrue(Argv.trueFlag);
         assertTrue(Argv.mixedCaseTrueFlag);
@@ -165,6 +165,7 @@ public class FlagsTests {
         assertNull(Argv.unsetBooleanClassFlag);
         assertTrue(Argv.yesFlag);
         assertFalse(Argv.noFlag);
+        assertTrue(Argv.withoutEqualsFlag);
     }
 
     @Test

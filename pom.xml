@@ -73,35 +73,6 @@
                 </configuration>
             </plugin>
 
-            <plugin>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <version>1.6</version>
-                <executions>
-                    <execution>
-                        <phase>deploy</phase>
-                        <configuration>
-                            <target>
-                                <exec dir="${project.build.directory}" executable="fig">
-                                    <arg value="--publish" />
-                                    <arg value="${project.artifactId}/${project.version}" />
-                                    <arg value="--resource" />
-                                    <arg value="${project.artifactId}-${project.version}.jar" />
-                                    <arg value="--resource" />
-                                    <arg value="${project.artifactId}-${project.version}-sources.jar" />
-                                    <arg value="--append" />
-                                    <arg value="CLASSPATH=@/${project.artifactId}-${project.version}.jar" />
-                                    <arg value="--append" />
-                                    <arg value="SRCPATH=@/${project.artifactId}-${project.version}-sources.jar" />
-                                </exec>
-                            </target>
-                        </configuration>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
             <!-- todo: don't know where to deploy it -->
             <plugin>
                 <artifactId>maven-deploy-plugin</artifactId>
